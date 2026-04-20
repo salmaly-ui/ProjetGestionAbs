@@ -1,0 +1,25 @@
+body {
+  margin: 0;
+  font-family: Arial;
+}
+
+table {
+  background: white;
+  border-collapse: collapse;
+}
+
+th {
+  background: #34495e;
+  color: white;
+  padding: 10px;
+}
+
+td {
+  padding: 10px;
+}
+
+button {
+  margin: 2px;
+  padding: 5px 10px;
+  cursor: pointer;
+}

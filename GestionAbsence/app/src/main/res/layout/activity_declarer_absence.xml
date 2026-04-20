@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F0F2F5">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <!-- Header -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="24dp">
+
+            <Button
+                android:id="@+id/btnRetour"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:text="← Retour"
+                android:textSize="13sp"
+                android:backgroundTint="#E5E7EB"
+                android:textColor="#374151"
+                android:layout_marginEnd="12dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Déclarer une absence"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#1A3A5C"/>
+        </LinearLayout>
+
+        <!-- Carte formulaire -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/bg_card"
+            android:padding="20dp">
+
+            <!-- Date début -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Date de début *"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:textColor="#374151"
+                android:layout_marginBottom="6dp"/>
+
+            <EditText
+                android:id="@+id/etDateDebut"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:hint="AAAA-MM-JJ"
+                android:focusable="false"
+                android:background="@drawable/bg_input"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"
+                android:layout_marginBottom="4dp"/>
+
+            <Button
+                android:id="@+id/btnPickDebut"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:text="Choisir la date"
+                android:textSize="12sp"
+                android:backgroundTint="#EFF6FF"
+                android:textColor="#1D4ED8"
+                android:layout_marginBottom="16dp"/>
+
+            <!-- Date fin -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Date de fin *"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:textColor="#374151"
+                android:layout_marginBottom="6dp"/>
+
+            <EditText
+                android:id="@+id/etDateFin"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:hint="AAAA-MM-JJ"
+                android:focusable="false"
+                android:background="@drawable/bg_input"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"
+                android:layout_marginBottom="4dp"/>
+
+            <Button
+                android:id="@+id/btnPickFin"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:text="Choisir la date"
+                android:textSize="12sp"
+                android:backgroundTint="#EFF6FF"
+                android:textColor="#1D4ED8"
+                android:layout_marginBottom="16dp"/>
+
+            <!-- Motif -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Motif"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:textColor="#374151"
+                android:layout_marginBottom="6dp"/>
+
+            <EditText
+                android:id="@+id/etMotif"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:hint="Décrivez brièvement votre absence..."
+                android:inputType="textMultiLine"
+                android:gravity="top"
+                android:background="@drawable/bg_input"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"
+                android:paddingTop="10dp"
+                android:layout_marginBottom="16dp"/>
+
+            <!-- Justificatif -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Justificatif (PDF ou image)"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:textColor="#374151"
+                android:layout_marginBottom="8dp"/>
+
+            <Button
+                android:id="@+id/btnJustificatif"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="Choisir un fichier"
+                android:textSize="13sp"
+                android:backgroundTint="#F3F4F6"
+                android:textColor="#374151"
+                android:layout_marginBottom="8dp"/>
+
+            <TextView
+                android:id="@+id/tvFichierChoisi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:textColor="#059669"
+                android:visibility="gone"
+                android:layout_marginBottom="20dp"/>
+
+            <!-- Bouton soumettre -->
+            <Button
+                android:id="@+id/btnSoumettre"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:text="Soumettre l'absence"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:backgroundTint="#1A3A5C"
+                android:textColor="#FFFFFF"/>
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                android:layout_marginTop="12dp"/>
+
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
