@@ -19,31 +19,27 @@ import retrofit2.http.Path;
 
 public interface ApiService {
 
-    // ── Auth ──────────────────────────────────────────────────────────────────
     @POST("auth/login")
     Call<LoginResponse> login(@Body LoginRequest body);
 
-    // ── Absences ──────────────────────────────────────────────────────────────
+    @GET("absences/mes-absences")
+    Call<List<Absence>> getMesAbsences();
 
-    // Consulter mes absences (filtrées automatiquement par le backend si etudiant)
+    // ✅ Garder getAbsences pour admin/agent si besoin
     @GET("absences")
     Call<List<Absence>> getAbsences();
 
-    // Déclarer une absence
     @POST("absences")
     Call<Map<String, Object>> createAbsence(@Body Map<String, String> body);
 
-    // Historique des décisions d'une absence
     @GET("absences/{id}/logs")
     Call<List<StatusLog>> getLogs(@Path("id") int absenceId);
 
-    // ── Documents ─────────────────────────────────────────────────────────────
-
-    // Joindre un justificatif
+    // ✅ URL corrigée
     @Multipart
-    @POST("documents/upload/{absenceId}")
+    @POST("absences/{absenceId}/document")
     Call<Map<String, Object>> uploadDocument(
             @Path("absenceId") int absenceId,
-            @Part MultipartBody.Part fichier
+            @Part MultipartBody.Part justificatif
     );
 }

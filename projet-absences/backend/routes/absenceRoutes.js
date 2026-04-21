@@ -25,4 +25,10 @@ router.post("/refuse", verifyToken, controller.refuse);
 
 router.get("/:id/logs", verifyToken, controller.getLogs);
 
+router.post("/encours", verifyToken, controller.encours);
+
+router.post("/:id/document", verifyToken,
+  controller.upload.single("justificatif"),  // ← nom du @Part Android
+  controller.uploadDocument
+);
 module.exports = router;

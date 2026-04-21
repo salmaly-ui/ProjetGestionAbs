@@ -1,7 +1,6 @@
 package com.ens.absences;
 
 import android.app.DatePickerDialog;
-import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -127,7 +126,7 @@ public class DeclarerAbsenceActivity extends AppCompatActivity {
                     public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
                         if (response.isSuccessful() && response.body() != null) {
                             // Récupérer l'id de l'absence créée
-                            Object idObj = response.body().get("id");
+                            Object idObj = response.body().get("absence_id");
                             absenceIdCree = idObj != null ? ((Double) idObj).intValue() : -1;
 
                             // Étape 2 : uploader le justificatif si choisi
@@ -160,7 +159,9 @@ public class DeclarerAbsenceActivity extends AppCompatActivity {
     private void uploadJustificatif(int absenceId) {
         try {
             InputStream is = getContentResolver().openInputStream(fichierUri);
-            byte[] bytes = is.readAllBytes();
+
+            // ✅ Remplacement de readAllBytes() compatible API 26+
+            byte[] bytes = readAllBytesCompat(is);
             is.close();
 
             String mimeType = getContentResolver().getType(fichierUri);
@@ -177,8 +178,14 @@ public class DeclarerAbsenceActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
                             progressBar.setVisibility(View.GONE);
-                            Toast.makeText(DeclarerAbsenceActivity.this,
-                                    "Absence et justificatif soumis avec succès", Toast.LENGTH_LONG).show();
+                            if (response.isSuccessful()) {
+                                Toast.makeText(DeclarerAbsenceActivity.this,
+                                        "Absence et justificatif soumis ✓", Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(DeclarerAbsenceActivity.this,
+                                        "Absence créée mais upload échoué (" + response.code() + ")",
+                                        Toast.LENGTH_LONG).show();
+                            }
                             finish();
                         }
 
@@ -186,17 +193,29 @@ public class DeclarerAbsenceActivity extends AppCompatActivity {
                         public void onFailure(Call<Map<String, Object>> call, Throwable t) {
                             progressBar.setVisibility(View.GONE);
                             Toast.makeText(DeclarerAbsenceActivity.this,
-                                    "Absence créée mais upload échoué", Toast.LENGTH_LONG).show();
+                                    "Absence créée mais réseau échoué : " + t.getMessage(),
+                                    Toast.LENGTH_LONG).show();
                             finish();
                         }
                     });
 
         } catch (Exception e) {
             progressBar.setVisibility(View.GONE);
-            Toast.makeText(this, "Erreur lecture fichier", Toast.LENGTH_SHORT).show();
+            btnSoumettre.setEnabled(true);
+            Toast.makeText(this, "Erreur lecture fichier : " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
+    // ✅ Remplace readAllBytes() — compatible API 26+
+    private byte[] readAllBytesCompat(InputStream is) throws Exception {
+        java.io.ByteArrayOutputStream buffer = new java.io.ByteArrayOutputStream();
+        byte[] chunk = new byte[8192];
+        int bytesRead;
+        while ((bytesRead = is.read(chunk)) != -1) {
+            buffer.write(chunk, 0, bytesRead);
+        }
+        return buffer.toByteArray();
+    }
     private String getNomFichier(Uri uri) {
         String nom = "fichier";
         Cursor cursor = getContentResolver().query(uri, null, null, null, null);
