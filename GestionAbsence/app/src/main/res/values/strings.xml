@@ -1,3 +1,34 @@
 <resources>
     <string name="app_name">GestionAbsence</string>
+
+    <!-- Login -->
+    <string name="ens_marrakech">ENS Marrakech</string>
+    <string name="gestion_absences">Gestion des Absences</string>
+    <string name="email">Email</string>
+    <string name="mot_de_passe">Mot de passe</string>
+    <string name="se_connecter">Se connecter</string>
+    <string name="pas_de_compte">Pas encore de compte ?</string>
+    <string name="inscrire">S&#8217;inscrire</string>
+
+    <!-- Register -->
+    <string name="creer_compte">Cr&#233;er un compte</string>
+    <string name="nom_complet">Nom complet</string>
+    <string name="confirmer_mdp">Confirmer le mot de passe</string>
+    <string name="deja_compte">D&#233;j&#224; un compte ?</string>
+    <string name="se_connecter_lien">Se connecter</string>
+    <string name="inscription">Inscription</string>
+
+    <!-- MainActivity -->
+    <string name="bonjour">Bonjour,</string>
+    <string name="deconnexion">D&#233;connexion</string>
+    <string name="mes_absences_medicales">Mes absences m&#233;dicales</string>
+    <string name="aucune_absence">Aucune absence d&#233;clar&#233;e</string>
+    <string name="nouvelle_absence">Nouvelle absence</string>
+    <string name="voir_details">Voir les d&#233;tails &#8594;</string>
+    <string name="icone_calendrier">&#128197;</string>
+    <string name="icone_note">&#128221;</string>
+
+    <!-- Splash -->
+    <string name="chargement">Chargement&#8230;</string>
+    <string name="bienvenue">Bienvenue</string>
 </resources>

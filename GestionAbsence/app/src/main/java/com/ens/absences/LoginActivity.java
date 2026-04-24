@@ -19,13 +19,14 @@ import com.ens.absences.utils.SessionManager;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
+import android.widget.TextView;
 public class LoginActivity extends AppCompatActivity {
 
     private EditText    etEmail, etPassword;
     private Button      btnLogin;
     private ProgressBar progressBar;
     private SessionManager session;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +48,11 @@ public class LoginActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar);
 
         btnLogin.setOnClickListener(v -> login());
+        // ✅ Lien vers Register
+        TextView tvRegister = findViewById(R.id.tvRegister);
+        tvRegister.setOnClickListener(v ->
+                startActivity(new Intent(this, RegisterActivity.class))
+        );
     }
 
     private void login() {

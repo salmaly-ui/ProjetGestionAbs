@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="10dp"
+    android:layout_marginBottom="12dp"
     app:cardCornerRadius="12dp"
     app:cardElevation="2dp"
     app:cardBackgroundColor="#FFFFFF">
@@ -15,44 +15,86 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Dates + badge statut sur la même ligne -->
+        <!-- Ligne 1 : dates + badge statut -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginBottom="8dp">
+            android:gravity="center_vertical">
+
+            <TextView
+                android:text="@string/icone_calendrier"
+                android:textSize="18sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"/>
 
             <TextView
                 android:id="@+id/tvDates"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textColor="#1a3a5c"
                 android:textSize="15sp"
-                android:textStyle="bold"
-                android:textColor="#1A3A5C"/>
+                android:fontFamily="sans-serif-medium"/>
 
             <TextView
                 android:id="@+id/tvStatut"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="12sp"
-                android:textStyle="bold"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
                 android:paddingTop="4dp"
-                android:paddingBottom="4dp"/>
+                android:paddingBottom="4dp"
+                android:textSize="11sp"
+                android:fontFamily="sans-serif-medium"
+                android:background="@drawable/bg_card"/>
+
         </LinearLayout>
 
-        <!-- Motif -->
-        <TextView
-            android:id="@+id/tvMotif"
+        <!-- Séparateur -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#F3F4F6"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"/>
+
+        <!-- Ligne 2 : motif -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:textColor="#6B7280"
-            android:maxLines="2"
-            android:ellipsize="end"/>
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:text="@string/icone_note"
+                android:textSize="14sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"/>
+
+            <TextView
+                android:id="@+id/tvMotif"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="#6B7280"
+                android:textSize="13sp"
+                android:maxLines="2"
+                android:ellipsize="end"/>
+
+        </LinearLayout>
+
+        <!-- Flèche détail -->
+        <TextView
+            android:text="@string/voir_details"
+            android:textColor="#1a3a5c"
+            android:textSize="12sp"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
     </LinearLayout>
 

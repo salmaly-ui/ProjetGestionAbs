@@ -34,15 +34,14 @@ import retrofit2.Response;
 public class DeclarerAbsenceActivity extends AppCompatActivity {
 
     private EditText etDateDebut, etDateFin, etMotif;
-    private Button   btnDebut, btnFin, btnJustificatif, btnSoumettre;
+    private Button btnDebut, btnFin, btnJustificatif, btnSoumettre;
     private TextView tvFichier;
     private ProgressBar progressBar;
 
     private String dateDebut = "", dateFin = "";
-    private Uri    fichierUri = null;
-    private int    absenceIdCree = -1;
+    private Uri fichierUri = null;
+    private int absenceIdCree = -1;
 
-    // Launcher pour choisir un fichier
     private final ActivityResultLauncher<String[]> pickFile =
             registerForActivityResult(new ActivityResultContracts.OpenDocument(), uri -> {
                 if (uri != null) {
@@ -57,29 +56,25 @@ public class DeclarerAbsenceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_declarer_absence);
 
-        etDateDebut    = findViewById(R.id.etDateDebut);
-        etDateFin      = findViewById(R.id.etDateFin);
-        etMotif        = findViewById(R.id.etMotif);
-        btnDebut       = findViewById(R.id.btnPickDebut);
-        btnFin         = findViewById(R.id.btnPickFin);
+        etDateDebut = findViewById(R.id.etDateDebut);
+        etDateFin = findViewById(R.id.etDateFin);
+        etMotif = findViewById(R.id.etMotif);
+        btnDebut = findViewById(R.id.btnPickDebut);
+        btnFin = findViewById(R.id.btnPickFin);
         btnJustificatif = findViewById(R.id.btnJustificatif);
-        btnSoumettre   = findViewById(R.id.btnSoumettre);
-        tvFichier      = findViewById(R.id.tvFichierChoisi);
-        progressBar    = findViewById(R.id.progressBar);
+        btnSoumettre = findViewById(R.id.btnSoumettre);
+        tvFichier = findViewById(R.id.tvFichierChoisi);
+        progressBar = findViewById(R.id.progressBar);
 
-        // Sélecteur de date début
         btnDebut.setOnClickListener(v -> showDatePicker(true));
-        btnFin.setOnClickListener(v   -> showDatePicker(false));
+        btnFin.setOnClickListener(v -> showDatePicker(false));
 
-        // Choisir justificatif (PDF ou image)
         btnJustificatif.setOnClickListener(v ->
                 pickFile.launch(new String[]{"image/*", "application/pdf"})
         );
 
-        // Soumettre
         btnSoumettre.setOnClickListener(v -> soumettre());
 
-        // Retour
         findViewById(R.id.btnRetour).setOnClickListener(v -> finish());
     }
 
@@ -100,7 +95,7 @@ public class DeclarerAbsenceActivity extends AppCompatActivity {
     private void soumettre() {
         String motif = etMotif.getText().toString().trim();
 
-        // Validations
+        // Validation des dates
         if (dateDebut.isEmpty() || dateFin.isEmpty()) {
             Toast.makeText(this, "Les dates sont obligatoires", Toast.LENGTH_SHORT).show();
             return;
@@ -110,14 +105,20 @@ public class DeclarerAbsenceActivity extends AppCompatActivity {
             return;
         }
 
+        // ✅ Règle métier : justificatif obligatoire
+        if (fichierUri == null) {
+            Toast.makeText(this, "Le justificatif (image ou PDF) est obligatoire", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         progressBar.setVisibility(View.VISIBLE);
         btnSoumettre.setEnabled(false);
 
         // Étape 1 : créer l'absence
         Map<String, String> body = new HashMap<>();
         body.put("start_date", dateDebut);
-        body.put("end_date",   dateFin);
-        body.put("reason",     motif);
+        body.put("end_date", dateFin);
+        body.put("reason", motif);
 
         ApiClient.getService(this)
                 .createAbsence(body)
@@ -125,18 +126,16 @@ public class DeclarerAbsenceActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<Map<String, Object>> call, Response<Map<String, Object>> response) {
                         if (response.isSuccessful() && response.body() != null) {
-                            // Récupérer l'id de l'absence créée
                             Object idObj = response.body().get("absence_id");
                             absenceIdCree = idObj != null ? ((Double) idObj).intValue() : -1;
 
-                            // Étape 2 : uploader le justificatif si choisi
-                            if (fichierUri != null && absenceIdCree != -1) {
+                            if (absenceIdCree != -1) {
                                 uploadJustificatif(absenceIdCree);
                             } else {
                                 progressBar.setVisibility(View.GONE);
+                                btnSoumettre.setEnabled(true);
                                 Toast.makeText(DeclarerAbsenceActivity.this,
-                                        "Absence soumise avec succès", Toast.LENGTH_LONG).show();
-                                finish();
+                                        "Absence créée mais identifiant manquant", Toast.LENGTH_LONG).show();
                             }
                         } else {
                             progressBar.setVisibility(View.GONE);
@@ -159,8 +158,6 @@ public class DeclarerAbsenceActivity extends AppCompatActivity {
     private void uploadJustificatif(int absenceId) {
         try {
             InputStream is = getContentResolver().openInputStream(fichierUri);
-
-            // ✅ Remplacement de readAllBytes() compatible API 26+
             byte[] bytes = readAllBytesCompat(is);
             is.close();
 
@@ -206,7 +203,7 @@ public class DeclarerAbsenceActivity extends AppCompatActivity {
         }
     }
 
-    // ✅ Remplace readAllBytes() — compatible API 26+
+    // Compatible API 26+
     private byte[] readAllBytesCompat(InputStream is) throws Exception {
         java.io.ByteArrayOutputStream buffer = new java.io.ByteArrayOutputStream();
         byte[] chunk = new byte[8192];
@@ -216,6 +213,7 @@ public class DeclarerAbsenceActivity extends AppCompatActivity {
         }
         return buffer.toByteArray();
     }
+
     private String getNomFichier(Uri uri) {
         String nom = "fichier";
         Cursor cursor = getContentResolver().query(uri, null, null, null, null);

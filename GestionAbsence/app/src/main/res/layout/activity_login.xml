@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -7,23 +7,25 @@
     android:padding="32dp"
     android:background="#F0F2F5">
 
+    <!-- Titre -->
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:text="ENS Marrakech"
         android:textSize="26sp"
         android:textStyle="bold"
         android:textColor="#1A3A5C"
-        android:layout_marginBottom="8dp"/>
+        android:layout_marginBottom="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:text="Gestion des absences médicales"
         android:textSize="14sp"
         android:textColor="#6B7280"
-        android:layout_marginBottom="40dp"/>
+        android:layout_marginBottom="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
+    <!-- Email -->
     <EditText
         android:id="@+id/etEmail"
         android:layout_width="match_parent"
@@ -31,11 +33,10 @@
         android:hint="Email"
         android:inputType="textEmailAddress"
         android:background="@drawable/bg_input"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:textSize="15sp"
+        android:padding="16dp"
         android:layout_marginBottom="14dp"/>
 
+    <!-- Password -->
     <EditText
         android:id="@+id/etPassword"
         android:layout_width="match_parent"
@@ -43,17 +44,15 @@
         android:hint="Mot de passe"
         android:inputType="textPassword"
         android:background="@drawable/bg_input"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:textSize="15sp"
+        android:padding="16dp"
         android:layout_marginBottom="24dp"/>
 
+    <!-- Bouton -->
     <Button
         android:id="@+id/btnLogin"
         android:layout_width="match_parent"
         android:layout_height="52dp"
         android:text="Se connecter"
-        android:textSize="16sp"
         android:textStyle="bold"
         android:backgroundTint="#1A3A5C"
         android:textColor="#FFFFFF"
@@ -61,8 +60,30 @@
 
     <ProgressBar
         android:id="@+id/progressBar"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <!-- Lien inscription -->
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"/>
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp">
+
+        <TextView
+            android:text="Pas de compte ?"
+            android:textColor="#6B7280"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/tvRegister"
+            android:text="S'inscrire"
+            android:textColor="#1a3a5c"
+            android:layout_marginStart="4dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
 
 </LinearLayout>

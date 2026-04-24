@@ -1,9 +1,9 @@
-const db     = require("../config/db");
+const db = require("../config/db");
 const multer = require("multer");
-const path   = require("path");
-const fs     = require("fs");
+const path = require("path");
+const fs = require("fs");
 
-// ─── Configuration upload ────────────────────────────────────────────────────
+// ─── Configuration upload ─────────────────────────────────────────
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const dir = "uploads/justificatifs";
@@ -11,10 +11,10 @@ const storage = multer.diskStorage({
     cb(null, dir);
   },
   filename: (req, file, cb) => {
-    const ext  = path.extname(file.originalname);
+    const ext = path.extname(file.originalname);
     const name = `justif_${Date.now()}${ext}`;
     cb(null, name);
-  }
+  },
 });
 
 const fileFilter = (req, file, cb) => {
@@ -26,7 +26,7 @@ const fileFilter = (req, file, cb) => {
 
 exports.upload = multer({ storage, fileFilter, limits: { fileSize: 5 * 1024 * 1024 } });
 
-// ─── CREATE ABSENCE ──────────────────────────────────────────────────────────
+// ─── CREATE ABSENCE (étape 1) ────────────────────────────────────
 exports.createAbsence = (req, res) => {
   const studentId = req.user?.id;
   if (!studentId) return res.status(401).json({ message: "Non authentifié" });
@@ -36,8 +36,15 @@ exports.createAbsence = (req, res) => {
   if (!start_date || !end_date)
     return res.status(400).json({ message: "Dates obligatoires" });
 
-  if (new Date(start_date) > new Date(end_date))
-    return res.status(400).json({ message: "Date début > date fin" });
+  const start = new Date(start_date);
+  const end = new Date(end_date);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  if (start > end)
+    return res.status(400).json({ message: "La date de début doit être ≤ date de fin" });
+  if (start < today)
+    return res.status(400).json({ message: "La date de début ne peut pas être dans le passé" });
 
   db.query(
     `INSERT INTO medical_absences (student_id, start_date, end_date, reason, status)
@@ -48,14 +55,14 @@ exports.createAbsence = (req, res) => {
 
       const absenceId = result.insertId;
 
-      // Log statut initial
+      // Log initial
       db.query(
         `INSERT INTO absence_status_logs (absence_id, changed_by, old_status, new_status, comment)
          VALUES (?, ?, NULL, 'en_attente', 'Demande créée')`,
         [absenceId, studentId]
       );
 
-      // Justificatif joint directement (optionnel)
+      // Si un fichier a été joint directement (multipart), on l'enregistre
       if (req.file) {
         const filePath = req.file.path.replace(/\\/g, "/");
         db.query(
@@ -70,7 +77,7 @@ exports.createAbsence = (req, res) => {
   );
 };
 
-// ─── UPLOAD DOCUMENT SÉPARÉ ──────────────────────────────────────────────────
+// ─── UPLOAD DOCUMENT SÉPARÉ (étape 2) ────────────────────────────
 exports.uploadDocument = (req, res) => {
   const absenceId = req.params.id;
 
@@ -89,8 +96,7 @@ exports.uploadDocument = (req, res) => {
   );
 };
 
-// ─── MES ABSENCES (étudiant) ─────────────────────────────────────────────────
-// ✅ Ajout du LEFT JOIN documents
+// ─── MES ABSENCES (étudiant) ─────────────────────────────────────
 exports.getMesAbsences = (req, res) => {
   const studentId = req.user?.id;
 
@@ -108,8 +114,7 @@ exports.getMesAbsences = (req, res) => {
   );
 };
 
-// ─── LISTE COMPLÈTE (admin/agent) ────────────────────────────────────────────
-// ✅ Une seule version avec JOIN documents
+// ─── LISTE COMPLÈTE (admin/agent) ────────────────────────────────
 exports.getAbsences = (req, res) => {
   db.query(
     `SELECT ma.*, u.nom, u.email, d.file_path, d.file_type
@@ -124,57 +129,94 @@ exports.getAbsences = (req, res) => {
   );
 };
 
-// ─── VALIDER ────────────────────────────────────────────────────────────────
+// ─── VALIDER (avec vérification justificatif obligatoire) ────────
 exports.validate = (req, res) => {
   const { id, comment } = req.body;
   const agentId = req.user?.id;
 
-  db.query("SELECT status FROM medical_absences WHERE id = ?", [id], (err, r) => {
-    if (!r.length) return res.status(404).json({ message: "Introuvable" });
-    if (["acceptee", "refusee"].includes(r[0].status))
-      return res.status(400).json({ message: "Déjà traitée" });
+  // Vérifier existence de l'absence ET présence d'un document justificatif
+  db.query(
+    `SELECT ma.status, d.id AS doc_id
+     FROM medical_absences ma
+     LEFT JOIN documents d ON d.absence_id = ma.id
+     WHERE ma.id = ?`,
+    [id],
+    (err, rows) => {
+      if (err) return res.status(500).json({ message: "Erreur serveur", error: err });
+      if (rows.length === 0)
+        return res.status(404).json({ message: "Absence introuvable" });
+      if (!rows[0].doc_id)
+        return res.status(400).json({ message: "Justificatif obligatoire avant validation" });
+      if (["acceptee", "refusee"].includes(rows[0].status))
+        return res.status(400).json({ message: "Déjà traitée" });
 
-    db.query(
-      "UPDATE medical_absences SET status='acceptee', agent_comment=? WHERE id=?",
-      [comment, id]
-    );
-    db.query(
-      `INSERT INTO absence_status_logs (absence_id, changed_by, old_status, new_status, comment)
-       VALUES (?, ?, ?, 'acceptee', ?)`,
-      [id, agentId, r[0].status, comment]
-    );
-    res.json({ message: "Validée" });
-  });
+      // Mise à jour du statut
+      db.query(
+        `UPDATE medical_absences SET status='acceptee', agent_comment=? WHERE id=?`,
+        [comment, id],
+        (err2) => {
+          if (err2) return res.status(500).json({ message: "Erreur mise à jour" });
+          // Ajout du log
+          db.query(
+            `INSERT INTO absence_status_logs (absence_id, changed_by, old_status, new_status, comment)
+             VALUES (?, ?, ?, 'acceptee', ?)`,
+            [id, agentId, rows[0].status, comment],
+            (err3) => {
+              if (err3) console.error("Erreur log:", err3);
+              res.json({ message: "Absence validée" });
+            }
+          );
+        }
+      );
+    }
+  );
 };
 
-// ─── REFUSER ────────────────────────────────────────────────────────────────
+// ─── REFUSER (avec vérification justificatif obligatoire) ────────
 exports.refuse = (req, res) => {
   const { id, comment } = req.body;
   const agentId = req.user?.id;
 
-  db.query("SELECT status FROM medical_absences WHERE id = ?", [id], (err, r) => {
-    if (!r.length) return res.status(404).json({ message: "Introuvable" });
-    if (["acceptee", "refusee"].includes(r[0].status))
-      return res.status(400).json({ message: "Déjà traitée" });
+  db.query(
+    `SELECT ma.status, d.id AS doc_id
+     FROM medical_absences ma
+     LEFT JOIN documents d ON d.absence_id = ma.id
+     WHERE ma.id = ?`,
+    [id],
+    (err, rows) => {
+      if (err) return res.status(500).json({ message: "Erreur serveur", error: err });
+      if (rows.length === 0)
+        return res.status(404).json({ message: "Absence introuvable" });
+      if (!rows[0].doc_id)
+        return res.status(400).json({ message: "Justificatif obligatoire avant refus" });
+      if (["acceptee", "refusee"].includes(rows[0].status))
+        return res.status(400).json({ message: "Déjà traitée" });
 
-    db.query(
-      "UPDATE medical_absences SET status='refusee', agent_comment=? WHERE id=?",
-      [comment, id]
-    );
-    db.query(
-      `INSERT INTO absence_status_logs (absence_id, changed_by, old_status, new_status, comment)
-       VALUES (?, ?, ?, 'refusee', ?)`,
-      [id, agentId, r[0].status, comment]
-    );
-    res.json({ message: "Refusée" });
-  });
+      db.query(
+        `UPDATE medical_absences SET status='refusee', agent_comment=? WHERE id=?`,
+        [comment, id],
+        (err2) => {
+          if (err2) return res.status(500).json({ message: "Erreur mise à jour" });
+          db.query(
+            `INSERT INTO absence_status_logs (absence_id, changed_by, old_status, new_status, comment)
+             VALUES (?, ?, ?, 'refusee', ?)`,
+            [id, agentId, rows[0].status, comment],
+            (err3) => {
+              if (err3) console.error("Erreur log:", err3);
+              res.json({ message: "Absence refusée" });
+            }
+          );
+        }
+      );
+    }
+  );
 };
 
-// ─── EN COURS ───────────────────────────────────────────────────────────────
+// ─── PASSER EN COURS ─────────────────────────────────────────────
 exports.encours = (req, res) => {
   const { id } = req.body;
   db.query(
-    "UPDATE medical_absences SET status='en_cours' WHERE id=? AND status IN ('en_attente','soumise')",
+    `UPDATE medical_absences SET status='en_cours' WHERE id=? AND status IN ('en_attente','soumise')`,
     [id],
     (err) => {
       if (err) return res.status(500).json({ message: "Erreur serveur" });
@@ -183,7 +225,7 @@ exports.encours = (req, res) => {
   );
 };
 
-// ─── LOGS ───────────────────────────────────────────────────────────────────
+// ─── HISTORIQUE DES STATUTS ──────────────────────────────────────
 exports.getLogs = (req, res) => {
   db.query(
     `SELECT l.*, u.nom AS agent_nom
