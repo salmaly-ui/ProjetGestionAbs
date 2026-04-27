@@ -1,34 +1,58 @@
 const db = require("../config/db");
 
-// ─── GET /api/users ───────────────────────────────────────────────────────────
-// Agent peut voir la liste (pour filtrer les absences par étudiant)
-// Admin peut voir et gérer
+// Récupérer tous les utilisateurs (admin uniquement)
 exports.getUsers = (req, res) => {
-  if (req.user.role === "etudiant")
-    return res.status(403).json({ message: "Accès interdit" });
+  if (req.user.role !== "admin") {
+    return res.status(403).json({ message: "Accès interdit, rôle admin requis" });
+  }
 
   db.query(
     "SELECT id, nom, email, role, created_at FROM users ORDER BY created_at DESC",
     (err, results) => {
-      if (err) return res.status(500).json({ message: "Erreur serveur", error: err });
+      if (err) return res.status(500).json({ message: "Erreur serveur" });
       res.json(results);
     }
   );
 };
 
-// ─── DELETE /api/users/:id ────────────────────────────────────────────────────
-// ADMIN SEULEMENT
+// Supprimer un utilisateur (admin uniquement)
 exports.deleteUser = (req, res) => {
-  if (req.user.role !== "admin")
-    return res.status(403).json({ message: "Seul l'admin peut supprimer un utilisateur" });
+  if (req.user.role !== "admin") {
+    return res.status(403).json({ message: "Accès interdit" });
+  }
 
-  if (parseInt(req.params.id) === req.user.id)
+  const userId = req.params.id;
+  if (parseInt(userId) === req.user.id) {
     return res.status(400).json({ message: "Vous ne pouvez pas supprimer votre propre compte" });
+  }
 
-  db.query("DELETE FROM users WHERE id = ?", [req.params.id], (err, result) => {
-    if (err) return res.status(500).json({ message: "Erreur serveur", error: err });
-    if (result.affectedRows === 0)
+  db.query("DELETE FROM users WHERE id = ?", [userId], (err, result) => {
+    if (err) return res.status(500).json({ message: "Erreur serveur" });
+    if (result.affectedRows === 0) {
       return res.status(404).json({ message: "Utilisateur non trouvé" });
-    res.json({ message: "Utilisateur supprimé" });
+    }
+    res.json({ message: "Utilisateur supprimé avec succès" });
   });
+};
+
+// Modifier un utilisateur (admin uniquement)
+exports.updateUser = (req, res) => {
+  if (req.user.role !== "admin") {
+    return res.status(403).json({ message: "Accès interdit" });
+  }
+
+  const userId = req.params.id;
+  const { nom, email, role } = req.body;
+
+  db.query(
+    "UPDATE users SET nom = ?, email = ?, role = ? WHERE id = ?",
+    [nom, email, role, userId],
+    (err, result) => {
+      if (err) return res.status(500).json({ message: "Erreur serveur" });
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ message: "Utilisateur non trouvé" });
+      }
+      res.json({ message: "Utilisateur mis à jour" });
+    }
+  );
 };

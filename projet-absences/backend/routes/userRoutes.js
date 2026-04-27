@@ -1,10 +1,11 @@
-// ─── routes/userRoutes.js ─────────────────────────────────────────────────────
-const express    = require("express");
-const router     = express.Router();
-const controller = require("../controllers/userController");
+const express = require("express");
+const router = express.Router();
 const { verifyToken } = require("../middleware/authMiddleware");
+const userController = require("../controllers/userController");
 
-router.get("/",     verifyToken, controller.getUsers);
-router.delete("/:id", verifyToken, controller.deleteUser);
+// Routes protégées (admin uniquement)
+router.get("/", verifyToken, userController.getUsers);
+router.delete("/:id", verifyToken, userController.deleteUser);
+router.put("/:id", verifyToken, userController.updateUser);
 
 module.exports = router;

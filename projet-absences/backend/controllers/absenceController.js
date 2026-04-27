@@ -38,13 +38,9 @@ exports.createAbsence = (req, res) => {
 
   const start = new Date(start_date);
   const end = new Date(end_date);
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
 
   if (start > end)
     return res.status(400).json({ message: "La date de début doit être ≤ date de fin" });
-  if (start < today)
-    return res.status(400).json({ message: "La date de début ne peut pas être dans le passé" });
 
   db.query(
     `INSERT INTO medical_absences (student_id, start_date, end_date, reason, status)
@@ -134,7 +130,6 @@ exports.validate = (req, res) => {
   const { id, comment } = req.body;
   const agentId = req.user?.id;
 
-  // Vérifier existence de l'absence ET présence d'un document justificatif
   db.query(
     `SELECT ma.status, d.id AS doc_id
      FROM medical_absences ma
@@ -150,13 +145,11 @@ exports.validate = (req, res) => {
       if (["acceptee", "refusee"].includes(rows[0].status))
         return res.status(400).json({ message: "Déjà traitée" });
 
-      // Mise à jour du statut
       db.query(
         `UPDATE medical_absences SET status='acceptee', agent_comment=? WHERE id=?`,
         [comment, id],
         (err2) => {
           if (err2) return res.status(500).json({ message: "Erreur mise à jour" });
-          // Ajout du log
           db.query(
             `INSERT INTO absence_status_logs (absence_id, changed_by, old_status, new_status, comment)
              VALUES (?, ?, ?, 'acceptee', ?)`,
