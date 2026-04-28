@@ -1,59 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    android:background="#1a3a5c">
+    android:background="@color/primary">
 
-    <!-- Logo rond -->
-    <FrameLayout
-        android:layout_width="110dp"
-        android:layout_height="110dp"
-        android:background="@drawable/bg_splash_logo">
+    <ImageView
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:src="@drawable/logo"
+        android:contentDescription="@string/app_name"
+        android:layout_marginBottom="24dp" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="ENS"
-            android:textColor="#1a3a5c"
-            android:textSize="32sp"
-            android:fontFamily="sans-serif-black"
-            android:gravity="center"/>
-    </FrameLayout>
-
-    <!-- Nom de l'app -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/ens_marrakech"
-        android:textColor="#FFFFFF"
-        android:textSize="26sp"
+        android:text="@string/gestion_absences_medicales"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
         android:fontFamily="sans-serif-medium"
-        android:layout_marginTop="24dp"/>
+        android:layout_marginTop="12dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/gestion_absences"
-        android:textColor="#80FFFFFF"
-        android:textSize="14sp"
-        android:layout_marginTop="6dp"/>
-
-    <!-- Barre de chargement -->
     <ProgressBar
-        android:layout_width="160dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
-        android:indeterminateTint="#FFFFFF"/>
+        android:indeterminateTint="@android:color/white" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/chargement"
-        android:textColor="#60FFFFFF"
+        android:textColor="#80FFFFFF"
         android:textSize="12sp"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="10dp" />
 
 </LinearLayout>

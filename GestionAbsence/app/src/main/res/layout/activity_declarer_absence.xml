@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F0F2F5">
+    android:background="@color/background"
+    android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -10,7 +12,6 @@
         android:orientation="vertical"
         android:padding="20dp">
 
-        <!-- Header -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -22,162 +23,139 @@
                 android:id="@+id/btnRetour"
                 android:layout_width="wrap_content"
                 android:layout_height="36dp"
-                android:text="← Retour"
+                android:text="@string/retour"
                 android:textSize="13sp"
-                android:backgroundTint="#E5E7EB"
-                android:textColor="#374151"
-                android:layout_marginEnd="12dp"/>
+                android:backgroundTint="@color/gray_light"
+                android:textColor="@color/primary_dark"
+                android:layout_marginEnd="12dp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Déclarer une absence"
+                android:text="@string/declarer_absence"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:textColor="#1A3A5C"/>
+                android:textColor="@color/primary" />
         </LinearLayout>
 
-        <!-- Carte formulaire -->
-        <LinearLayout
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/bg_card"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="2dp"
             android:padding="20dp">
 
-            <!-- Date début -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Date de début *"
-                android:textSize="13sp"
-                android:textStyle="bold"
-                android:textColor="#374151"
-                android:layout_marginBottom="6dp"/>
-
-            <EditText
-                android:id="@+id/etDateDebut"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:hint="AAAA-MM-JJ"
-                android:focusable="false"
-                android:background="@drawable/bg_input"
-                android:paddingStart="14dp"
-                android:paddingEnd="14dp"
-                android:layout_marginBottom="4dp"/>
-
-            <Button
-                android:id="@+id/btnPickDebut"
-                android:layout_width="wrap_content"
-                android:layout_height="36dp"
-                android:text="Choisir la date"
-                android:textSize="12sp"
-                android:backgroundTint="#EFF6FF"
-                android:textColor="#1D4ED8"
-                android:layout_marginBottom="16dp"/>
-
-            <!-- Date fin -->
-            <TextView
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Date de fin *"
-                android:textSize="13sp"
-                android:textStyle="bold"
-                android:textColor="#374151"
-                android:layout_marginBottom="6dp"/>
+                android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/etDateFin"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:hint="AAAA-MM-JJ"
-                android:focusable="false"
-                android:background="@drawable/bg_input"
-                android:paddingStart="14dp"
-                android:paddingEnd="14dp"
-                android:layout_marginBottom="4dp"/>
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/date_debut"
+                    android:layout_marginBottom="8dp">
 
-            <Button
-                android:id="@+id/btnPickFin"
-                android:layout_width="wrap_content"
-                android:layout_height="36dp"
-                android:text="Choisir la date"
-                android:textSize="12sp"
-                android:backgroundTint="#EFF6FF"
-                android:textColor="#1D4ED8"
-                android:layout_marginBottom="16dp"/>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etDateDebut"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:inputType="date" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Motif -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Motif"
-                android:textSize="13sp"
-                android:textStyle="bold"
-                android:textColor="#374151"
-                android:layout_marginBottom="6dp"/>
+                <Button
+                    android:id="@+id/btnPickDebut"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/choisir_date"
+                    android:backgroundTint="@color/accent_light"
+                    android:textColor="@color/accent"
+                    android:layout_marginBottom="16dp" />
 
-            <EditText
-                android:id="@+id/etMotif"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:hint="Décrivez brièvement votre absence..."
-                android:inputType="textMultiLine"
-                android:gravity="top"
-                android:background="@drawable/bg_input"
-                android:paddingStart="14dp"
-                android:paddingEnd="14dp"
-                android:paddingTop="10dp"
-                android:layout_marginBottom="16dp"/>
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/date_fin"
+                    android:layout_marginBottom="8dp">
 
-            <!-- Justificatif -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Justificatif (PDF ou image)"
-                android:textSize="13sp"
-                android:textStyle="bold"
-                android:textColor="#374151"
-                android:layout_marginBottom="8dp"/>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etDateFin"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:inputType="date" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-            <Button
-                android:id="@+id/btnJustificatif"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:text="Choisir un fichier"
-                android:textSize="13sp"
-                android:backgroundTint="#F3F4F6"
-                android:textColor="#374151"
-                android:layout_marginBottom="8dp"/>
+                <Button
+                    android:id="@+id/btnPickFin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/choisir_date"
+                    android:backgroundTint="@color/accent_light"
+                    android:textColor="@color/accent"
+                    android:layout_marginBottom="16dp" />
 
-            <TextView
-                android:id="@+id/tvFichierChoisi"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="13sp"
-                android:textColor="#059669"
-                android:visibility="gone"
-                android:layout_marginBottom="20dp"/>
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/motif"
+                    android:layout_marginBottom="16dp">
 
-            <!-- Bouton soumettre -->
-            <Button
-                android:id="@+id/btnSoumettre"
-                android:layout_width="match_parent"
-                android:layout_height="52dp"
-                android:text="Soumettre l'absence"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:backgroundTint="#1A3A5C"
-                android:textColor="#FFFFFF"/>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etMotif"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textMultiLine"
+                        android:minLines="3" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-            <ProgressBar
-                android:id="@+id/progressBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:visibility="gone"
-                android:layout_marginTop="12dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/justificatif"
+                    android:textStyle="bold"
+                    android:textColor="@color/primary_dark"
+                    android:layout_marginBottom="8dp" />
 
-        </LinearLayout>
+                <Button
+                    android:id="@+id/btnJustificatif"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:text="@string/choisir_fichier"
+                    android:backgroundTint="@color/gray_light"
+                    android:textColor="@color/primary_dark" />
+
+                <TextView
+                    android:id="@+id/tvFichierChoisi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="13sp"
+                    android:textColor="@color/success"
+                    android:visibility="gone"
+                    android:layout_marginTop="8dp" />
+
+                <Button
+                    android:id="@+id/btnSoumettre"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:layout_marginTop="24dp"
+                    android:text="@string/soumettre"
+                    android:textStyle="bold"
+                    android:backgroundTint="@color/primary"
+                    android:textColor="@android:color/white" />
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:visibility="gone"
+                    android:layout_marginTop="12dp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
 </ScrollView>

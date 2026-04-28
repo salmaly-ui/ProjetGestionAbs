@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F0F2F5">
+    android:background="@color/background">
 
     <!-- Header -->
     <LinearLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#1a3a5c"
+        android:background="@color/primary"
         android:orientation="vertical"
         android:paddingStart="20dp"
         android:paddingEnd="20dp"
@@ -19,28 +18,28 @@
         android:paddingBottom="20dp">
 
         <TextView
-            android:text="@string/ens_marrakech"
-            android:textColor="#80FFFFFF"
-            android:textSize="12sp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:text="@string/gestion_absences_medicales"
+            android:textColor="#80FFFFFF"
+            android:textSize="12sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:layout_marginTop="4dp">
+            android:layout_marginTop="8dp">
 
             <TextView
                 android:id="@+id/tvNomEtudiant"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textColor="#FFFFFF"
+                android:textColor="@android:color/white"
                 android:textSize="20sp"
                 android:fontFamily="sans-serif-medium"
-                android:text="@string/bonjour"/>
+                android:text="@string/bonjour" />
 
             <ImageButton
                 android:id="@+id/btnLogout"
@@ -48,58 +47,58 @@
                 android:layout_height="36dp"
                 android:background="@drawable/bg_btn_outline"
                 android:src="@android:drawable/ic_lock_power_off"
-                app:tint="#FFFFFF"
-                android:contentDescription="@string/deconnexion"/>
-
+                app:tint="@android:color/white"
+                android:contentDescription="@string/deconnexion" />
         </LinearLayout>
 
         <TextView
-            android:text="@string/mes_absences_medicales"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/mes_absences"
             android:textColor="#80FFFFFF"
             android:textSize="13sp"
-            android:layout_marginTop="2dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
+            android:layout_marginTop="4dp" />
     </LinearLayout>
 
-    <!-- Contenu -->
-    <LinearLayout
+    <!-- SwipeRefreshLayout -->
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:layout_marginTop="140dp">
 
-        <ProgressBar
-            android:id="@+id/progressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="40dp"
-            android:visibility="gone"/>
-
-        <TextView
-            android:id="@+id/tvVide"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/aucune_absence"
-            android:textColor="#9CA3AF"
-            android:textSize="15sp"
-            android:gravity="center"
-            android:layout_marginTop="60dp"
-            android:visibility="gone"/>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:paddingTop="12dp"
-            android:paddingBottom="80dp"
-            android:clipToPadding="false"/>
+            android:orientation="vertical">
 
-    </LinearLayout>
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="40dp"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tvVide"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/aucune_absence"
+                android:textColor="@color/gray_text"
+                android:gravity="center"
+                android:layout_marginTop="60dp"
+                android:visibility="gone" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="12dp"
+                android:clipToPadding="false"
+                android:scrollbars="vertical" />
+        </LinearLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <!-- FAB -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -110,8 +109,8 @@
         android:layout_margin="20dp"
         android:src="@android:drawable/ic_input_add"
         android:contentDescription="@string/nouvelle_absence"
-        app:backgroundTint="#1a3a5c"
-        app:tint="#FFFFFF"
-        app:elevation="6dp"/>
+        app:backgroundTint="@color/primary"
+        app:tint="@android:color/white"
+        app:elevation="6dp" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

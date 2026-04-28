@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#F0F2F5">
+    android:background="@color/background">
 
-    <!-- Header -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#1A3A5C"
+        android:background="@color/primary"
         android:padding="16dp"
         android:gravity="center_vertical">
 
@@ -17,17 +17,17 @@
             android:id="@+id/btnRetour"
             android:layout_width="wrap_content"
             android:layout_height="36dp"
-            android:text="← Retour"
+            android:text="@string/retour"
             android:textSize="12sp"
             android:backgroundTint="@android:color/transparent"
-            android:textColor="#FFFFFF"
+            android:textColor="@android:color/white"
             android:layout_marginEnd="12dp"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Détail de l'absence"
-            android:textColor="#FFFFFF"
+            android:text="@string/detail_absence"
+            android:textColor="@android:color/white"
             android:textSize="18sp"
             android:textStyle="bold"/>
     </LinearLayout>
@@ -42,112 +42,120 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- Carte infos -->
-            <LinearLayout
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@drawable/bg_card"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
                 android:padding="18dp"
                 android:layout_marginBottom="14dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="STATUT"
-                    android:textSize="11sp"
-                    android:textStyle="bold"
-                    android:textColor="#9CA3AF"
-                    android:layout_marginBottom="6dp"/>
-
-                <TextView
-                    android:id="@+id/tvStatut"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Soumise"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp"
-                    android:paddingTop="6dp"
-                    android:paddingBottom="6dp"
-                    android:layout_marginBottom="14dp"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="PÉRIODE"
-                    android:textSize="11sp"
-                    android:textStyle="bold"
-                    android:textColor="#9CA3AF"
-                    android:layout_marginBottom="4dp"/>
-
-                <TextView
-                    android:id="@+id/tvDates"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="15sp"
-                    android:textColor="#374151"
-                    android:layout_marginBottom="14dp"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="MOTIF"
-                    android:textSize="11sp"
-                    android:textStyle="bold"
-                    android:textColor="#9CA3AF"
-                    android:layout_marginBottom="4dp"/>
-
-                <TextView
-                    android:id="@+id/tvMotif"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="15sp"
-                    android:textColor="#374151"
-                    android:layout_marginBottom="10dp"/>
-
-                <TextView
-                    android:id="@+id/tvCommentaire"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="14sp"
-                    android:textColor="#065F46"
-                    android:background="#ECFDF5"
-                    android:padding="10dp"
-                    android:visibility="gone"/>
-            </LinearLayout>
+                    android:orientation="vertical">
 
-            <!-- Historique -->
-            <LinearLayout
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/statut"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/gray_text"
+                        android:layout_marginBottom="6dp"/>
+
+                    <TextView
+                        android:id="@+id/tvStatut"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="12dp"
+                        android:paddingTop="6dp"
+                        android:paddingBottom="6dp"
+                        android:layout_marginBottom="14dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/periode"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/gray_text"
+                        android:layout_marginBottom="4dp"/>
+
+                    <TextView
+                        android:id="@+id/tvDates"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp"
+                        android:textColor="@color/primary_dark"
+                        android:layout_marginBottom="14dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/motif"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/gray_text"
+                        android:layout_marginBottom="4dp"/>
+
+                    <TextView
+                        android:id="@+id/tvMotif"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp"
+                        android:textColor="@color/primary_dark"
+                        android:layout_marginBottom="10dp"/>
+
+                    <TextView
+                        android:id="@+id/tvCommentaire"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:textColor="@color/success"
+                        android:background="#ECFDF5"
+                        android:padding="10dp"
+                        android:visibility="gone"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@drawable/bg_card"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
                 android:padding="18dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Historique des décisions"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:textColor="#1A3A5C"
-                    android:layout_marginBottom="12dp"/>
-
-                <ProgressBar
-                    android:id="@+id/progressBar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"/>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerLogs"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false"/>
+                    android:orientation="vertical">
 
-            </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/historique"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/primary"
+                        android:layout_marginBottom="12dp"/>
+
+                    <ProgressBar
+                        android:id="@+id/progressBar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"/>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerLogs"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"/>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

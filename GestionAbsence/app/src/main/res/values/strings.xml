@@ -1,34 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">GestionAbsence</string>
-
-    <!-- Login -->
-    <string name="ens_marrakech">ENS Marrakech</string>
-    <string name="gestion_absences">Gestion des Absences</string>
+    <string name="app_name"> Gestion Absences </string>
+    <string name="gestion_absences_medicales">Gestion des absences médicales</string>
+    <string name="bonjour">Bonjour,</string>
+    <string name="mes_absences">Mes absences</string>
+    <string name="deconnexion">Déconnexion</string>
+    <string name="aucune_absence">Aucune absence déclarée</string>
+    <string name="nouvelle_absence">Nouvelle absence</string>
+    <string name="declarer_absence">Déclarer une absence</string>
+    <string name="retour">← Retour</string>
+    <string name="date_debut">Date de début</string>
+    <string name="date_fin">Date de fin</string>
+    <string name="motif">Motif</string>
+    <string name="justificatif">Justificatif (PDF ou image)</string>
+    <string name="choisir_fichier">Choisir un fichier</string>
+    <string name="soumettre">Soumettre l\'absence</string>   <!-- apostrophe échappée -->
+    <string name="detail_absence">Détail de l\'absence</string> <!-- apostrophe échappée -->
+    <string name="statut">Statut</string>
+    <string name="periode">Période</string>
+    <string name="historique">Historique des décisions</string>
+    <string name="voir_details">Voir détails →</string>
+    <string name="chargement">Chargement...</string>
     <string name="email">Email</string>
     <string name="mot_de_passe">Mot de passe</string>
     <string name="se_connecter">Se connecter</string>
-    <string name="pas_de_compte">Pas encore de compte ?</string>
-    <string name="inscrire">S&#8217;inscrire</string>
-
-    <!-- Register -->
-    <string name="creer_compte">Cr&#233;er un compte</string>
+    <string name="pas_de_compte">Pas de compte ?</string>
+    <string name="s_inscrire">S\'inscrire</string>   <!-- apostrophe échappée -->
+    <string name="creer_compte">Créer un compte</string>
     <string name="nom_complet">Nom complet</string>
     <string name="confirmer_mdp">Confirmer le mot de passe</string>
-    <string name="deja_compte">D&#233;j&#224; un compte ?</string>
-    <string name="se_connecter_lien">Se connecter</string>
     <string name="inscription">Inscription</string>
+    <string name="deja_compte">Déjà un compte ?</string>
+    <string name="se_connecter_lien">Se connecter</string>
+    <string name="choisir_date">Choisir la date</string>
 
-    <!-- MainActivity -->
-    <string name="bonjour">Bonjour,</string>
-    <string name="deconnexion">D&#233;connexion</string>
-    <string name="mes_absences_medicales">Mes absences m&#233;dicales</string>
-    <string name="aucune_absence">Aucune absence d&#233;clar&#233;e</string>
-    <string name="nouvelle_absence">Nouvelle absence</string>
-    <string name="voir_details">Voir les d&#233;tails &#8594;</string>
-    <string name="icone_calendrier">&#128197;</string>
-    <string name="icone_note">&#128221;</string>
-
-    <!-- Splash -->
-    <string name="chargement">Chargement&#8230;</string>
-    <string name="bienvenue">Bienvenue</string>
+    <!-- icônes texte -->
+    <string name="icone_calendrier">📅</string>
+    <string name="icone_note">📝</string>
 </resources>
